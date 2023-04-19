@@ -1,11 +1,18 @@
+import Link from "next/link";
 import path from "path";
 
 function HomePage(props) {
+    const products = props.products;
+
     return (
         <ul>
-            <li>Product 1</li>
-            <li>Product 2</li>
-            <li>Product 3</li>
+            {products.map((product) => {
+                return (
+                    <li key={product.id}>
+                        <Link href={`/${product.id}`}>{product.title}</Link>
+                    </li>
+                );
+            })}
         </ul>
     );
 }
@@ -26,9 +33,9 @@ export async function getStaticProps() {
 
     return {
         props: {
-            product: data.products,
+            products: data.products,
         },
-        revalidate: 120,
+        revalidate: 5,
     };
 }
 
