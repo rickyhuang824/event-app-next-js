@@ -6,6 +6,7 @@ import { getFilteredEvents } from "@/helpers/api-utils";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import React, { useEffect, useState } from "react";
+import Head from "next/head";
 
 const fetcher = (url) => fetch(url).then((r) => r.json());
 
@@ -34,12 +35,34 @@ const FilteredEventsPage = (props) => {
         }
     }, [data]);
 
+    let pageHeadData = (
+        <Head>
+            <title>Filtered Events</title>
+            <meta name="dscription" content={`A list of filtered evnets`} />
+        </Head>
+    );
+
     if (!loadedEvents) {
-        return <p className="center">Loading..</p>;
+        return (
+            <>
+                {pageHeadData}
+                <p className="center">Loading..</p>;
+            </>
+        );
     }
 
     const filteredYear = +filterData[0];
     const filteredMonth = +filterData[1];
+
+    pageHeadData = (
+        <Head>
+            <title>Filtered Events</title>
+            <meta
+                name="dscription"
+                content={`All events for ${filteredYear}/${filteredMonth}`}
+            />
+        </Head>
+    );
 
     if (
         isNaN(filteredYear) ||
@@ -88,6 +111,9 @@ const FilteredEventsPage = (props) => {
     const date = new Date(filteredYear, filteredMonth - 1);
     return (
         <>
+            <Head>
+                <title>Filtered Event</title>
+            </Head>
             <ResultsTitle date={date} />
             <EventList events={filteredEvents} />;
         </>
