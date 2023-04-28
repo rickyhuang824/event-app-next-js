@@ -4,9 +4,7 @@ import { connectToDatabase } from "../../../lib/db";
 import { verifyPassword } from "../../../lib/auth";
 
 export const authOptions = {
-    session: {
-        jwt: true,
-    },
+    session: { strategy: "jwt" },
     providers: [
         CredentialsProvider({
             async authorize(credentials) {
@@ -33,7 +31,7 @@ export const authOptions = {
                 }
 
                 client.close();
-                return { email: user.email };
+                return { name: "", email: user.email, image: "" };
             },
         }),
     ],
